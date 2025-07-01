@@ -2,15 +2,7 @@ import { useState} from 'react';
 import '../assets/index.css'
 import Auth from '../utils/auth';
 import { login } from '../api/authApi';
-
-
-export const LoginPage = () => {
-  return (
-    <>
-    <p1>You'll be able to log in so hard later!</p1>
-    </>
-  )
-}
+import { Link } from 'react-router-dom';
 const Login = () => {
   const [loginData, setLoginData] = useState({
     username: '',
@@ -67,6 +59,12 @@ const Login = () => {
           </button>
         </div>
       </form>
+      <div>
+        <p>
+          No account yet?
+          <Link to='/signup'>Sign Up!</Link>
+        </p>
+      </div>
     </div>
   );
 };
