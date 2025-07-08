@@ -3,8 +3,6 @@ import bcrypt from 'bcrypt';
 export default class User extends Model {
 
   id;
-  firstName;
-  lastName;
   username;
   email;
   password;
@@ -26,12 +24,12 @@ export function UserFactory(sequelize) {
         autoIncrement: true,
         primaryKey: true,
       },
-      firstName: {
-        type: DataTypes.STRING,
-      },
-      lastName: {
-        type: DataTypes.STRING,
-      },
+      // firstName: {
+      //   type: DataTypes.STRING,
+      // },
+      // lastName: {
+      //   type: DataTypes.STRING,
+      // },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -64,12 +62,12 @@ export function UserFactory(sequelize) {
       sequelize,
       hooks: {
         beforeCreate: async (user) => {
-          if  ( !user.password.startsWith('$2b$') ) {
+          if  ( user.password && !user.password.startsWith('$2b$') ) {
             await user.setPassword(user.password);
           }
         },
         beforeUpdate: async (user) => {
-          if (user.changed('password') && !user.password.startsWith('$2b$')) {
+          if (user.changed('password') && user.password && !user.password.startsWith('$2b$')) {
             await user.setPassword(user.password);
           }
         },

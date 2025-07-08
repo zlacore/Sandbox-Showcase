@@ -37,15 +37,16 @@ export const SignUp = () => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
+            
             const data = await response.json();
             const { token } = data;
-
+            
             if (token) {
                 localStorage.setItem('token', token);
             }
-
+            
         } catch (error) {
+            window.alert(error)
             console.error('There was a problem with your fetch operation:', error);
             setError('There was a problem with your fetch operation');
         }

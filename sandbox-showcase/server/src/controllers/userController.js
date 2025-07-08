@@ -7,8 +7,6 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 export const registerUser = async (req, res) => {
     const {
-        firstName,
-        lastName,
         username,
         email,
         password,
@@ -31,15 +29,17 @@ export const registerUser = async (req, res) => {
         
 
         // Create new user
+
+        console.log('Registering user:', { username, email, password });
+        
         const newUser = await User.create({
-            firstName,
-            lastName,
             username,
             email,
             password,
         });
 
-        console.log('New user created:', newUser.username);
+        console.log('New user created:', newUser.dataValues.username);
+        console.log(newUser)
 
         // Generate JWT
         const token = jwt.sign({ id: newUser.id }, JWT_SECRET, { expiresIn: '1h' });
@@ -65,13 +65,19 @@ export const loginUser = async (req, res) => {
 
         const user = await User.findOne({ where: { username } });
         
-
+        console.log(req.username)
+        console.log(req.password)
         if (!user) {
             console.log('User not found:');
             
             return res.status(404).json({ message: 'User not found.' });
         }       
 
+        if (!user.password || !password) {
+            console.log('Password missing for user or request')
+            return res.status(404).json({message: 'Password missing'})
+        }
+        
         const isPasswordValid = await bcrypt.compare(password, user.password);        
 
         if (!isPasswordValid) {

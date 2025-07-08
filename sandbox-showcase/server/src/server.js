@@ -1,10 +1,11 @@
 import express from 'express';
 import multer from 'multer'
-import { sequelize } from './models/db.js'; // Assuming .ts extension
+import { sequelize } from './models/index.js';
 import routes from './routes/index.js'; // Assuming .ts extension
 import userRoutes from './routes/auth-routes.js'; // Assuming .ts extension
 import dotenv from 'dotenv';
 import { v2 as cloudinary } from 'cloudinary'
+import { userRouter } from './routes/api/users.js';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -40,7 +41,6 @@ app.use(express.urlencoded({ extended: true }));
 // Define the API routes for user authentication
 app.use('/api/auth', userRoutes);
 
-app.use('/api/user', userRoutes);
 
 // Catch-all route for frontend (if you’re using a client-side framework like React)
 app.use(routes);
@@ -52,7 +52,7 @@ const PORT = process.env.PORT || 5000;
 sequelize.authenticate()
   .then(() => {
     console.log('Database connected!');
-    return sequelize.sync({ alter: true }); // Sync all models
+    return sequelize.sync({ force: true }); // Sync all models
   })
   .then(() => {
     app.listen(PORT, () => {

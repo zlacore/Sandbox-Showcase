@@ -22,6 +22,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(loginData)
       const data = await login(loginData);
       Auth.login(data.token);
     } catch (err) {
