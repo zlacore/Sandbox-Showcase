@@ -17,12 +17,14 @@ const Login = () => {
       ...loginData,
       [name]: value,
     });
+
+    console.log('loginData at handleChange', loginData.username, loginData.password)
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('login data', loginData)
     try {
-      console.log(loginData)
       const data = await login(loginData);
       Auth.login(data.token);
     } catch (err) {

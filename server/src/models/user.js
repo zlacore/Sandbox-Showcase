@@ -38,7 +38,7 @@ export function UserFactory(sequelize) {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: false,
         validate: {
           isEmail: true,
         },
@@ -62,8 +62,10 @@ export function UserFactory(sequelize) {
       sequelize,
       hooks: {
         beforeCreate: async (user) => {
-          if  ( user.password && !user.password.startsWith('$2b$') ) {
-            await user.setPassword(user.password);
+           console.log('beforeCreate hook running');
+          if  (user.password && !user.password.startsWith('$2b$') ) {
+           user.password = await bcrypt.hash(user.password, 10)
+            console.log('password hashed!', user.password)
           }
         },
         beforeUpdate: async (user) => {

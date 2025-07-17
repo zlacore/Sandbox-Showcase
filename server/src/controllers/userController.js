@@ -1,7 +1,10 @@
 // import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../models/user.js'; 
+import { UserFactory } from '../models/user.js';
+import { sequelize } from '../models/index.js';
+// import { hasFormSubmit } from '@testing-library/user-event/dist/utils';
+const User = UserFactory(sequelize)
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
@@ -27,6 +30,7 @@ export const registerUser = async (req, res) => {
 
         // Hash the password
         
+        const hashedPassword = await bcrypt.hash(password, 10)
 
         // Create new user
 
@@ -35,7 +39,7 @@ export const registerUser = async (req, res) => {
         const newUser = await User.create({
             username,
             email,
-            password,
+            password: hashedPassword,
         });
 
         console.log('New user created:', newUser.dataValues.username);
@@ -64,21 +68,21 @@ export const loginUser = async (req, res) => {
         }
 
         const user = await User.findOne({ where: { username } });
+        console.log(user)
         
-        console.log(req.username)
-        console.log(req.password)
+        console.log('Request body:', req.body)
         if (!user) {
             console.log('User not found:');
             
             return res.status(404).json({ message: 'User not found.' });
         }       
 
-        if (!user.password || !password) {
+        if (!user.dataValues.password || !password) {
             console.log('Password missing for user or request')
             return res.status(404).json({message: 'Password missing'})
         }
-        
-        const isPasswordValid = await bcrypt.compare(password, user.password);        
+        // const hashedPassword = await bcrypt.hash(password, 10)
+        const isPasswordValid = await bcrypt.compare(password, user.dataValues.password);        
 
         if (!isPasswordValid) {
             console.log('Wrong password');
