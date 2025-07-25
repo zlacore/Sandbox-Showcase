@@ -43,6 +43,8 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // Debug middleware to log all requests
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.path}`);
+  console.log('Headers:', req.headers.authorization ? 'Auth header present' : 'No auth header');
+  console.log('Body:', req.body ? 'Body present' : 'No body');
   next();
 });
 
@@ -51,7 +53,12 @@ app.use(routes);
 
 // Catch-all handler: send back React's index.html file for any non-API routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
+  // Only serve the React app for non-API routes
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  } else {
+    res.status(404).json({ error: 'API endpoint not found' });
+  }
 });
 
 const PORT = process.env.PORT || 5000;
@@ -60,7 +67,11 @@ const PORT = process.env.PORT || 5000;
 sequelize.authenticate()
   .then(() => {
     console.log('Database connected!');
-    return sequelize.sync({force: true}); // Sync all models
+    // Use alter in production, force only in development
+    const syncOptions = process.env.NODE_ENV === 'production' 
+      ? { alter: true } 
+      : { force: true };
+    return sequelize.sync(syncOptions);
   })
   .then(() => {
     app.listen(PORT, () => {
