@@ -47,7 +47,6 @@ export const getBuildsByUser = async (req, res) => {
 export const getAllBuilds = async (_req, res) => {
     try {
         const builds = await Build.findAll()
-        res.json(builds)
         res.status(200).json(builds);
     } catch (err) {
         console.error(err);

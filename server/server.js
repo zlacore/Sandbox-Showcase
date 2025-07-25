@@ -67,11 +67,8 @@ const PORT = process.env.PORT || 5000;
 sequelize.authenticate()
   .then(() => {
     console.log('Database connected!');
-    // Use alter in production, force only in development
-    const syncOptions = process.env.NODE_ENV === 'production' 
-      ? { alter: true } 
-      : { force: true };
-    return sequelize.sync(syncOptions);
+    // Don't use force: true - it drops your tables every time!
+    return sequelize.sync({ alter: false }); 
   })
   .then(() => {
     app.listen(PORT, () => {
@@ -85,11 +82,12 @@ sequelize.authenticate()
 // Global error handler (optional)
 app.use((err, _req, res, next) => {
   console.error('An error occurred:', err);
-  console.log('res is not a proper response object', res);
 
-  if(res && typeof res.status === 'function') {
+  // Only send response if headers haven't been sent yet
+  if (!res.headersSent) {
     res.status(500).json({ error: 'Something went wrong!' });
   } else {
+    // If headers were already sent, just pass to default Express error handler
     next(err);
   }
 });
