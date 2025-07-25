@@ -1,0 +1,50 @@
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(148, 223, 148);
+}
+
+#subheader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: aquamarine;
+  width: 100%
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%
+}
+
+#feed {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+#feedsearch {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+#feed-div {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 1200px;
+  
+}
+.build-card {
+  border: 5px solid black;
+}
