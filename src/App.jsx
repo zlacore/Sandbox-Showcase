@@ -10,9 +10,9 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 // 
-  // function logOut() {
-  //   setUserData(null)
-  // }
+  function logOut() {
+    setUserData(null)
+  }
   useEffect(() => {
     const token = localStorage.getItem('id_token');
     if (token && currentUser) {
@@ -63,7 +63,7 @@ function App() {
           {userData &&
           <>
             <p>Welcome, {userData.username}</p>
-            {/* <button onClick={() => logOut()}>Logout</button> */}
+            <button onClick={() => logOut()}>Logout</button>
           </>
           }
         </div>

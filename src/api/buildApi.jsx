@@ -30,6 +30,8 @@ const saveBuild = async (buildInfo) => {
 const getBuilds = async () => {
     try {
         const token = localStorage.getItem('id_token')
+        console.log('Token being sent:', token ? 'Token exists' : 'NO TOKEN FOUND');
+        
         const response = await fetch('/api/build',  {
             method: 'GET',
             headers: {
