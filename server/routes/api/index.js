@@ -5,7 +5,8 @@ import { userRouter } from './users.js';
 
 const router = Router();
 
-router.use('/build', authenticateToken, buildRouter)
+// Simplified routing to debug path-to-regexp error
+router.use('/build', buildRouter);
 router.use('/user', userRouter);
 
 export default router;
