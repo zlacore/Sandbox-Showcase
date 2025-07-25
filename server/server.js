@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 dotenv.config(); // Load environment variables first
 
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 // import multer from 'multer'
 import cors from 'cors'
 import { sequelize } from './models/index.js';
@@ -9,6 +11,10 @@ import routes from './routes/index.js';
 // import authRoutes from './routes/auth-routes.js'
 import { v2 as cloudinary } from 'cloudinary'
 // import { userRouter } from './routes/api/users.js';
+
+// Get __dirname equivalent for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -21,12 +27,14 @@ const app = express();
 
 // Enable CORS for all routes
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'], // Allow requests from Vite dev server
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.FRONTEND_URL || true  // Allow all origins in production or specific URL
+    : ['http://localhost:5173', 'http://localhost:5174'], // Allow requests from Vite dev server
   credentials: true
 }));
 
 // Middleware for static files (serving the client-side build)
-app.use(express.static('../client/dist'));
+app.use(express.static('dist')); // Serve built files from dist directory
 
 // Middleware for JSON and URL-encoded requests
 app.use(express.json({ limit: '50mb'}));
@@ -40,6 +48,11 @@ app.use((req, res, next) => {
 
 // Use main routes (which includes auth routes at /api/auth)
 app.use(routes);
+
+// Catch-all handler: send back React's index.html file for any non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
 
 const PORT = process.env.PORT || 5000;
 
