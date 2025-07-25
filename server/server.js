@@ -52,7 +52,7 @@ app.use((req, res, next) => {
 app.use(routes);
 
 // Catch-all handler: send back React's index.html file for any non-API routes
-app.get('*', (req, res) => {
+app.use((req, res, next) => {
   // Only serve the React app for non-API routes
   if (!req.path.startsWith('/api')) {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
