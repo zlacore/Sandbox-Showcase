@@ -91,7 +91,10 @@ export const ProfilePage = () => {
     }
 
     if (error) {
-        return <div>{error}</div>;
+        console.log(error)
+        return (<div>
+            <h1>Sign in to upload builds!</h1>
+        </div>)
     }
 
     return (
