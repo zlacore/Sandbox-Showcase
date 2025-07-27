@@ -18,7 +18,6 @@ export function UserFactory(sequelize) {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true,
       },
       // firstName: {
       //   type: DataTypes.STRING,
@@ -29,7 +28,8 @@ export function UserFactory(sequelize) {
       username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        primaryKey: true
       },
       email: {
         type: DataTypes.STRING,

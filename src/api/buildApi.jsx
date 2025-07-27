@@ -48,7 +48,7 @@ const getBuilds = async () => {
     }
 }
 
-const getBuildsByUser = async (id) => {
+const getBuildsByUser = async (username) => {
     try {
         const token = localStorage.getItem('id_token')
         console.log('Token being sent for getBuildsByUser:', token ? 'Token exists' : 'NO TOKEN FOUND');
@@ -57,7 +57,7 @@ const getBuildsByUser = async (id) => {
             throw new Error('No authentication token found');
         }
         
-        const response = await fetch(`/api/build/${id}`, {
+        const response = await fetch(`/api/build/${username}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`

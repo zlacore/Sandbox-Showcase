@@ -23,11 +23,11 @@ export const ProfilePage = () => {
                 return;
             }
             
-            const id = currentUser.id
+            const username = currentUser.username
             console.log('Current user:', currentUser)
             try {
                 setLoading(true)
-                const builds = await getBuildsByUser(id)
+                const builds = await getBuildsByUser(username)
                 console.log('Fetched builds:', builds)
                 setBuildFeed(builds)
             } catch (err) {
