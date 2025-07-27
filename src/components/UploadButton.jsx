@@ -15,7 +15,8 @@ export default function ImageUpload() {
   };
 
   const handleTextChange = (e) => {
-    setText(e.target.text)
+    setText(e.target.value)
+    console.log(text)
   }
 
   const handleUpload = async () => {
@@ -24,7 +25,7 @@ export default function ImageUpload() {
     setUploading(true);
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('title', text)
+    // formData.append('title', text)
 
     try {
 
@@ -45,7 +46,7 @@ export default function ImageUpload() {
       setImageUrl(data.url);
       saveBuild({
         user: currentUser.username,
-        title: formData.title,
+        title: text,
         url: data.imageUrl
       })
 

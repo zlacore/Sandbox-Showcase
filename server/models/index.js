@@ -38,7 +38,7 @@ const sequelize = process.env.DATABASE_URL
 UserFactory(sequelize);
 BuildFactory(sequelize);
 
-User.hasMany(Build, { foreignKey: 'user', sourceKey: 'id' });
-Build.belongsTo(User, { foreignKey: 'user', targetKey: 'id' });
+User.hasMany(Build, { foreignKey: 'user', sourceKey: 'username' });
+Build.belongsTo(User, { foreignKey: 'user', targetKey: 'username' });
 
 export { sequelize, Sequelize, User, Build }

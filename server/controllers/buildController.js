@@ -4,7 +4,7 @@ import User from "../models/user.js";
 const Build = BuildFactory(sequelize)
 
 export const uploadBuild = async (req, res) => {
-    const userId = req.user.id  // Use user ID instead of username
+    const username = req.user.username  // Use user ID instead of username
     const {
         title,
         url,
@@ -15,7 +15,7 @@ export const uploadBuild = async (req, res) => {
 
     try {
         const newBuild = await Build.create({
-            user: userId,  // Save user ID instead of username
+            user: username,  // Save user ID instead of username
             title,
             url,
             description

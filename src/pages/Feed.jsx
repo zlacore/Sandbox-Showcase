@@ -52,9 +52,14 @@ const Feed = () => {
             <button></button>
             </span> */}
                 </div>
-                <div id='feed-div'>
-                    {renderBuilds()}
-                </div>
+                <div className='centered'>
+                    <div>
+                        <h1>Build Feed</h1>
+                    </div>
+                    <div id='feed-div'>
+                        {renderBuilds()}
+                    </div>
+                </div >
             </div>
         </>
     )

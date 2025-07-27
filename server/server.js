@@ -69,7 +69,7 @@ sequelize.authenticate()
   .then(() => {
     console.log('Database connected!');
     // One-time reset to fix database structure completely
-    return sequelize.sync({ force: true }); 
+    return sequelize.sync(); 
   })
   .then(() => {
     const server = app.listen(PORT, () => {
