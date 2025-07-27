@@ -21,10 +21,13 @@ export const registerUser = async (req, res) => {
             return res.status(400).json({ message: 'Required fields are missing.' });
         }
 
-        // Check if the user already exists
-        const existingUser = await User.findOne({ where: { email } });
+        // Check if the user already exists by username
+        console.log('Checking for existing user with username:', username);
+        const existingUser = await User.findOne({ where: { username } });
+        console.log('Existing user found:', existingUser ? 'Yes' : 'No');
+        
         if (existingUser) {
-
+            console.log('User already exists with username:', username);
             return res.status(400).json({ message: 'User already exists.' });
         }
 

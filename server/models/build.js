@@ -13,11 +13,11 @@ export function BuildFactory(sequelize) {
                 primaryKey: true
             },
             user: {
-                type: DataTypes.STRING,
+                type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
                     model: 'user',
-                    key: 'username'
+                    key: 'id'
                 }
             },
             title: {
