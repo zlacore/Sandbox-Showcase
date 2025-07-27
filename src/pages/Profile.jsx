@@ -1,38 +1,60 @@
-import React, { useState, useEffect } from "react";
+import { getBuildsByUser } from "../api/buildApi";
+import { useState, useEffect } from "react";
 import { useUser } from "../context/UserContext";
 import '../index.css'
-export const ProfilePage= () => {
+import ImageUpload from "../components/UploadButton";
+export const ProfilePage = () => {
 
-    // const [exerciseArr, setExerciseArr] = useState<SavedExercise[]>([])
-    // TODO: Create function to get exercises from db and display them on page
-//     const getExercises = async () => {
-//         try {
-//             const response = await fetch('/api/exercises', 
-//                 {
-//                     method: 'GET'
-//                 }
-//             )
-//             if (!response.ok) {
-//                 throw new Error(`invalid API response, check network tab! Status: ${response.status}`);
-//             }
-//             const data = await response.json()
-//             setExerciseArr(data);
-//         } catch (error) {
-//             console.error('Could not retrieve exercises!')
-//         }
-//     }
-
-//     useEffect(() => {
-//         getExercises()
-//     }, [])
-// import  React, { useState, useEffect } from 'react';
-// export const ProfilePage: React.FC = () => {
+    // import  React, { useState, useEffect } from 'react';
+    // export const ProfilePage: React.FC = () => {
 
     const { currentUser } = useUser();
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    
+    const [buildFeed, setBuildFeed] = useState([])
+
+    useEffect(() => {
+        const fetchBuildsByUser = async () => {
+            // Check if currentUser exists before trying to access username
+            if (!currentUser || !currentUser.username) {
+                console.log('No current user found, skipping build fetch');
+                setLoading(false);
+                return;
+            }
+            
+            const username = currentUser.username
+            console.log('Current user:', currentUser)
+            try {
+                setLoading(true)
+                const builds = await getBuildsByUser(username)
+                console.log('Fetched builds:', builds)
+                setBuildFeed(builds)
+            } catch (err) {
+                console.error('Error fetching builds:', err)
+                setError('Failed to load builds')
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchBuildsByUser()
+    }, [currentUser]) // ✅ Add currentUser as dependency
+
+    function renderBuilds() {
+        if (loading) return <p>Loading builds...</p>
+        if (error) return <p>Error: {error}</p>
+        if (buildFeed.length === 0) return <p>No builds found</p>
+        return buildFeed.map((build) => {
+            return (
+                <div key={build.id} className='build-card'>
+                    <h3>{build.title}</h3>
+                    <img src={build.url} alt={build.title} style={{ maxWidth: '300px' }}></img>
+                    <p>{build.description}</p>
+                    <p>By: {build.user}</p>
+                </div>
+            )
+        })
+    }
     useEffect(() => {
         const token = localStorage.getItem('id_token');
         if (token && currentUser) {
@@ -46,7 +68,7 @@ export const ProfilePage= () => {
                     if (response.ok) {
                         const data = await response.json();
                         setUserData(data);
-                    } else {                        
+                    } else {
                         setError("An error occurred while fetching user data");
                     }
                 } catch (error) {
@@ -71,16 +93,17 @@ export const ProfilePage= () => {
     if (error) {
         return <div>{error}</div>;
     }
- 
+
     return (
         <>
             <div className='centered'>
                 <div>
-                    <h1>{userData.username}</h1>
+                    <h1>Your builds</h1>
+                    <ImageUpload></ImageUpload>
                 </div>
-                <section className='cardrow'>
-                       
-                </section>
+                    <div id='feed-div'>
+                        {renderBuilds()}
+                    </div>
             </div >
         </>
     );;

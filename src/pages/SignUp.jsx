@@ -28,23 +28,42 @@ export const SignUp = () => {
         }
         setError('');
         try {
+            // Only send required fields to backend
+            const registrationData = {
+                username: formData.username,
+                email: formData.email,
+                password: formData.password
+            };
+            
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(registrationData)
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                // Check if response has content before trying to parse JSON
+                const text = await response.text();
+                console.error('Server error:', { status: response.status, text });
+                
+                let errorMessage = `Server error: ${response.status}`;
+                try {
+                    const errorData = JSON.parse(text);
+                    errorMessage = errorData.message || errorMessage;
+                } catch (parseError) {
+                    errorMessage = text || errorMessage;
+                }
+                
+                throw new Error(errorMessage);
             }
             
             const data = await response.json();
             const { token } = data;
             
             if (token) {
-                localStorage.setItem('token', token);
+                localStorage.setItem('id_token', token);
             }
         } catch (error) {
             window.alert(error)

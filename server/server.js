@@ -1,20 +1,21 @@
 import dotenv from 'dotenv';
-dotenv.config(); // Load environment variables first
-
-import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-// import multer from 'multer'
+
+// Get __dirname equivalent for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load .env from the parent directory (root of project)
+dotenv.config({ path: path.join(__dirname, '../.env') });
+
+import express from 'express';
 import cors from 'cors'
 import { sequelize } from './models/index.js';
 import routes from './routes/index.js';
 // import authRoutes from './routes/auth-routes.js'
 import { v2 as cloudinary } from 'cloudinary'
 // import { userRouter } from './routes/api/users.js';
-
-// Get __dirname equivalent for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -29,7 +30,7 @@ const app = express();
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? process.env.FRONTEND_URL || true  // Allow all origins in production or specific URL
-    : ['http://localhost:5173', 'http://localhost:5174'], // Allow requests from Vite dev server
+    : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'], // Allow requests from Vite dev server
   credentials: true
 }));
 
@@ -61,23 +62,40 @@ app.use((req, res, next) => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Database connection and server start
 sequelize.authenticate()
   .then(() => {
     console.log('Database connected!');
-    // Don't use force: true - it drops your tables every time!
+    // Database structure is now correct
     return sequelize.sync({ alter: false }); 
   })
   .then(() => {
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
+    });
+
+    // Handle server errors
+    server.on('error', (err) => {
+      console.error('Server error:', err);
     });
   })
   .catch((err) => {
     console.error('Unable to connect to the database:', err);
   });
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  process.exit(1);
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
 
 // Global error handler (optional)
 app.use((err, _req, res, next) => {

@@ -45,6 +45,11 @@ nav {
   width: 1200px;
   
 }
+
+#upload-card {
+  display: flex;
+  flex-direction: column;
+}
 .build-card {
   border: 5px solid black;
 }
