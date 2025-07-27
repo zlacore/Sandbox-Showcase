@@ -43,7 +43,7 @@ const Feed = () => {
             <div id='feed'>
 
                 <div id='feedsearch'>
-                    <h1>Image Feed</h1>
+                    <h1>Build Feed</h1>
 
 
                     {/* <span>

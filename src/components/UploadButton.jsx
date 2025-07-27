@@ -4,7 +4,7 @@ import { saveBuild } from '../api/buildApi';
 // Code assisted by ChatGPT
 export default function ImageUpload() {
   const currentUser = useUser()
-    
+
   const [file, setFile] = useState(null);
   const [text, setText] = useState('')
   const [uploading, setUploading] = useState(false);
@@ -58,8 +58,14 @@ export default function ImageUpload() {
 
   return (
     <div>
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-      <input type="text" onChange={handleTextChange} />
+      <h3>Upload images here!</h3>
+      <div id='upload-card'>
+
+        <input type="file" accept="image/*" onChange={handleFileChange} />
+        <span>
+          <label>title</label> <input type="text" onChange={handleTextChange} />
+        </span>
+      </div>
       <button onClick={handleUpload} disabled={uploading}>
         {uploading ? 'Uploading...' : 'Upload Image'}
       </button>

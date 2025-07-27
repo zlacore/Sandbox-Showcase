@@ -4,14 +4,21 @@ import './App.css';
 import { NavBar } from './components/NavBar';
 import { Link } from 'react-router-dom'
 import { useUser } from './context/UserContext';
+import Auth from './utils/auth';
+
 function App() {
-  const { currentUser } = useUser()
+  const { currentUser, setCurrentUser } = useUser()
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 // 
   function logOut() {
-    setUserData(null)
+    // Clear local state
+    setUserData(null);
+    // Clear UserContext
+    setCurrentUser(null);
+    // Clear token and redirect (Auth service handles this)
+    Auth.logout();
   }
   useEffect(() => {
     const token = localStorage.getItem('id_token');
