@@ -68,8 +68,8 @@ const PORT = process.env.PORT || 5001;
 sequelize.authenticate()
   .then(() => {
     console.log('Database connected!');
-    // Database structure is now correct
-    return sequelize.sync({ alter: false }); 
+    // One-time reset to fix database structure completely
+    return sequelize.sync({ force: true }); 
   })
   .then(() => {
     const server = app.listen(PORT, () => {
