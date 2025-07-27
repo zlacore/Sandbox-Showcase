@@ -23,11 +23,11 @@ export const ProfilePage = () => {
                 return;
             }
             
-            const username = currentUser.username
+            const id = currentUser.id
             console.log('Current user:', currentUser)
             try {
                 setLoading(true)
-                const builds = await getBuildsByUser(username)
+                const builds = await getBuildsByUser(id)
                 console.log('Fetched builds:', builds)
                 setBuildFeed(builds)
             } catch (err) {
@@ -50,7 +50,7 @@ export const ProfilePage = () => {
                     <h3>{build.title}</h3>
                     <img src={build.url} alt={build.title} style={{ maxWidth: '300px' }}></img>
                     <p>{build.description}</p>
-                    <p>By: {build.user}</p>
+                    <p>By: {currentUser.username}</p>
                 </div>
             )
         })
