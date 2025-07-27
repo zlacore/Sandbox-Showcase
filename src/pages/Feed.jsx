@@ -41,17 +41,6 @@ const Feed = () => {
 
         <>
             <div id='feed'>
-
-                <div id='feedsearch'>
-                    <h1>Build Feed</h1>
-
-
-                    {/* <span>
-            In future, add ability to search and filter
-            <input></input>
-            <button></button>
-            </span> */}
-                </div>
                 <div className='centered'>
                     <div>
                         <h1>Build Feed</h1>
