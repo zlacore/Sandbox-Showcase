@@ -1,4 +1,4 @@
-import { getBuildsByUser } from "../api/buildApi";
+import { getBuildsByUser, deleteBuild } from "../api/buildApi";
 import { useState, useEffect } from "react";
 import { useUser } from "../context/UserContext";
 import '../index.css'
@@ -14,6 +14,28 @@ export const ProfilePage = () => {
     const [error, setError] = useState(null);
     const [buildFeed, setBuildFeed] = useState([])
 
+    async function handleDeleteBuild(publicId) {
+        console.log('Attempting to delete build with publicId: ', publicId)
+        try {
+            const res = await fetch(`/api/delete/${publicId}`, {
+                method: 'DELETE',
+            });
+
+            if (!res.ok) throw new Error('Image deletion failed');
+
+            const data = await res.json();
+            console.log(data)
+            await deleteBuild(
+                publicId
+            )
+            await refreshBuilds()
+
+            setBuildFeed((prev) => prev.filter((build) => build.publicId !== publicId))
+        } catch (err) {
+            alert(err.message);
+        }
+
+    }
     useEffect(() => {
         const fetchBuildsByUser = async () => {
             // Check if currentUser exists before trying to access username
@@ -22,7 +44,7 @@ export const ProfilePage = () => {
                 setLoading(false);
                 return;
             }
-            
+
             const username = currentUser.username
             console.log('Current user:', currentUser)
             try {
@@ -40,6 +62,18 @@ export const ProfilePage = () => {
         fetchBuildsByUser()
     }, [currentUser]) // ✅ Add currentUser as dependency
 
+    const refreshBuilds = async () => {
+        if (!currentUser || !currentUser.username) return;
+        setLoading(true);
+        try {
+            const builds = await getBuildsByUser(currentUser.username);
+            setBuildFeed(builds);
+        } catch (err) {
+            setError('Failed to load builds');
+        } finally {
+            setLoading(false);
+        }
+    };
     function renderBuilds() {
         if (loading) return <p>Loading builds...</p>
         if (error) return <p>Error: {error}</p>
@@ -51,11 +85,16 @@ export const ProfilePage = () => {
                     <img src={build.url} alt={build.title} style={{ maxWidth: '300px' }}></img>
                     <p>{build.description}</p>
                     <p>By: {currentUser.username}</p>
+                    <button onClick={() => handleDeleteBuild(build.publicId)}>
+                        Delete
+                    </button>
                 </div>
             )
         })
     }
     useEffect(() => {
+
+        if (!currentUser || !currentUser.username) return
         const token = localStorage.getItem('id_token');
         if (token && currentUser) {
             const fetchUserData = async () => {
@@ -80,9 +119,6 @@ export const ProfilePage = () => {
                 }
             };
             fetchUserData();
-        } else {
-            setError("No token found");
-            setLoading(false);
         }
     }, [currentUser]);
 
@@ -93,7 +129,7 @@ export const ProfilePage = () => {
     if (error) {
         console.log(error)
         return (<div className='centered'>
-            <h1>Sign in to upload builds!</h1>
+            <h1>{error}</h1>
         </div>)
     }
 
@@ -102,11 +138,11 @@ export const ProfilePage = () => {
             <div className='centered'>
                 <div>
                     <h1>Your builds</h1>
-                    <ImageUpload></ImageUpload>
+                    <ImageUpload onUploadSuccess={refreshBuilds}></ImageUpload>
                 </div>
-                    <div id='feed-div'>
-                        {renderBuilds()}
-                    </div>
+                <div id='feed-div'>
+                    {renderBuilds()}
+                </div>
             </div >
         </>
     );;

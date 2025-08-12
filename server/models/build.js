@@ -12,6 +12,10 @@ export function BuildFactory(sequelize) {
                 autoIncrement: true,
                 primaryKey: true
             },
+            publicId: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
             user: {
                 type: DataTypes.STRING,
                 allowNull: false,
