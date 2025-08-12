@@ -92,7 +92,7 @@ export const ProfilePage = () => {
 
     if (error) {
         console.log(error)
-        return (<div>
+        return (<div className='centered'>
             <h1>Sign in to upload builds!</h1>
         </div>)
     }
