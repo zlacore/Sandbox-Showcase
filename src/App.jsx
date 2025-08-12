@@ -69,7 +69,9 @@ function App() {
 
           {userData &&
           <>
-            <p>Welcome, {userData.username}</p>
+            <h3 style={{
+              color: 'black', strong: '100'
+            }}>Welcome, {userData.username}</h3>
             <button onClick={() => logOut()}>Logout</button>
           </>
           }
