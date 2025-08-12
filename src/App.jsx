@@ -62,16 +62,36 @@ function App() {
     <>
       <header>
         <div id='subheader'>
-          <h1>SandboxShowcase</h1>
+          <img src='./sandboxshowcaseattempt1.png'
+          style={{
+            position: 'relative',
+            left: '20px',
+            width: '600px',
+            height: '120px',
+            // marginLeft: '0',
+            // marginRight: 'auto',
+            zIndex: '3'
+          }}
+          >
+          </img>
           {!userData &&
-            <Link to='/login'>Login</Link>
+            <Link to='/login'
+            style={{
+              color: 'black',
+              position: 'absolute',
+              right: '600px',
+              top: '72px'
+            }}
+            >Login</Link>
           }
 
           {userData &&
           <>
-            <h3 style={{
-              color: 'black', strong: '100'
-            }}>Welcome, {userData.username}</h3>
+            <h3 
+            style={{
+              color: 'black'
+            }}
+            >Welcome, {userData.username}</h3>
             <button onClick={() => logOut()}>Logout</button>
           </>
           }

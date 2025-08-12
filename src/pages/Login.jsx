@@ -82,7 +82,11 @@ const Login = () => {
       <div>
         <p>
           No account yet?
-          <Link to='/signup'>Sign Up!</Link>
+          <Link to='/signup'
+          style={{
+            color: 'black',
+          }}
+          >Sign Up!</Link>
         </p>
       </div>
     </div>
