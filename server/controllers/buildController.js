@@ -1,24 +1,26 @@
 import { BuildFactory } from "../models/build.js";
 import { sequelize } from "../models/index.js";
-import User from "../models/user.js";
+// import User from "../models/user.js";
 const Build = BuildFactory(sequelize)
 
 export const uploadBuild = async (req, res) => {
     const username = req.user.username  
     const {
+        publicId,
         title,
         url,
-        description
+        description,
     } = req.body
 
     console.log('Saving build to database!')
 
     try {
         const newBuild = await Build.create({
+            publicId,
             user: username,  
             title,
             url,
-            description
+            description,
         })
 
         console.log('Build saved to database!')
@@ -31,6 +33,16 @@ export const uploadBuild = async (req, res) => {
     }
 }
 
+export const deleteBuild = async (req, res) => {
+    const { publicId } = req.params
+     try {
+        const removeBuild = await Build.destroy({ where: { publicId } });
+        res.status(200).json(removeBuild);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Could not remove build!' });
+    }
+}
 export const getBuildsByUser = async (req, res) => {
     const { user } = req.params;
     try {

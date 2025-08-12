@@ -24,6 +24,23 @@ const saveBuild = async (buildInfo) => {
     }
 };
 
+const deleteBuild = async (publicId) => {
+    try {
+        const response = await fetch(`/api/build/${publicId}`, {
+            method: 'DELETE'
+        })
+
+         const data = await response.json()
+        if (!response.ok) {
+            throw new Error('User information not retrieved, check network tab!');
+        }
+
+        return data;
+    } catch (err) {
+        console.log(`Could not delete build!`, err)
+    }
+}
+
 const getBuilds = async () => {
     try {
         const token = localStorage.getItem('id_token')
@@ -74,4 +91,4 @@ const getBuildsByUser = async (username) => {
         return Promise.reject('Could not fetch builds!');
     }
 }
-export { saveBuild, getBuilds, getBuildsByUser }
+export { saveBuild, getBuilds, getBuildsByUser, deleteBuild }

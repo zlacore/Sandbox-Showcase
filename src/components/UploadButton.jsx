@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useUser } from '../context/UserContext';
 import { saveBuild } from '../api/buildApi';
 // Code assisted by ChatGPT
-export default function ImageUpload() {
+export default function ImageUpload({ onUploadSuccess }) {
   const currentUser = useUser()
 
   const [file, setFile] = useState(null);
@@ -44,11 +44,16 @@ export default function ImageUpload() {
       const data = await res.json();
       console.log(data)
       setImageUrl(data.url);
-      saveBuild({
+
+      const newBuild = {
         user: currentUser.username,
         title: text,
-        url: data.imageUrl
-      })
+        url: data.imageUrl,
+        publicId: data.publicId
+      }
+      await saveBuild(newBuild)
+
+      if (onUploadSuccess) onUploadSuccess()
 
     } catch (err) {
       alert(err.message);

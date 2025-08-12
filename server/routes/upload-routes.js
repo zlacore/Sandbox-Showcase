@@ -47,4 +47,21 @@ router.post('/upload', upload.single('image'), async (req, res) => {
 
 })
 
+router.delete('/delete/:publicId', async (req, res) => {
+    const { publicId } = req.params
+    console.log('@upload-routes -- Deleting image with publicId ', publicId)
+    try {
+        const result = await cloudinary.uploader.destroy(publicId)
+        if (result.result === 'ok') {
+            res.json({ message: 'Image deleted successfully' });
+            console.log('Image deleted successfully!')
+        } else {
+            res.status(400).json({ message: 'Failed to delete image', result });
+        }
+    } catch (err) {
+         console.error('Image delete error:', err);
+        res.status(500).json({ message: 'Failed to delete image' });
+    }
+})
+
 export default router
