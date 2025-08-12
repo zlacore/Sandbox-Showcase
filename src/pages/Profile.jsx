@@ -136,13 +136,29 @@ export const ProfilePage = () => {
     return (
         <>
             <div className='centered'>
-                <div>
-                    <h1>Your builds</h1>
-                    <ImageUpload onUploadSuccess={refreshBuilds}></ImageUpload>
-                </div>
-                <div id='feed-div'>
-                    {renderBuilds()}
-                </div>
+
+                {
+                    !currentUser && (
+                        <h1>
+                            Sign in to upload your cool builds!
+                        </h1>
+                    )
+                }
+
+                {
+                    currentUser && (
+                        <>
+                            <div>
+                                <h1>Your builds</h1>
+                                <ImageUpload onUploadSuccess={refreshBuilds}></ImageUpload>
+                            </div>
+                            <div id='feed-div'>
+                                {renderBuilds()}
+                            </div>
+                        </>
+
+                    )
+                }
             </div >
         </>
     );;
