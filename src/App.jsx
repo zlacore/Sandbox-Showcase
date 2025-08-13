@@ -2,9 +2,9 @@ import { Outlet } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
 import { NavBar } from './components/NavBar';
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import { useUser } from './context/UserContext';
-import Auth from './utils/auth';
+// import Auth from './utils/auth';
 
 function App() {
   const { currentUser, setCurrentUser } = useUser()
@@ -12,14 +12,14 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 // 
-  function logOut() {
-    // Clear local state
-    setUserData(null);
-    // Clear UserContext
-    setCurrentUser(null);
-    // Clear token and redirect (Auth service handles this)
-    Auth.logout();
-  }
+  // function logOut() {
+  //   // Clear local state
+  //   setUserData(null);
+  //   // Clear UserContext
+  //   setCurrentUser(null);
+  //   // Clear token and redirect (Auth service handles this)
+  //   Auth.logout();
+  // }
   useEffect(() => {
     const token = localStorage.getItem('id_token');
     if (token && currentUser) {
@@ -74,7 +74,7 @@ function App() {
           }}
           >
           </img>
-          {!userData &&
+          {/* {!userData &&
             <Link to='/login'
             style={{
               color: 'black',
@@ -83,18 +83,26 @@ function App() {
               top: '72px'
             }}
             >Login</Link>
+          } */}
+
+          {
+          // userData &&
+          // <>
+          //   <h3 
+          //   style={{
+          //     color: 'black'
+          //   }}
+          //   >Welcome, {currentUser.username}</h3>
+          //   {/* <button onClick={() => logOut()}>Logout</button> */}
+          // </>
           }
 
-          {userData &&
-          <>
-            <h3 
-            style={{
-              color: 'black'
-            }}
-            >Welcome, {userData.username}</h3>
-            <button onClick={() => logOut()}>Logout</button>
-          </>
-          }
+          {/* {!userData && <>
+          <div>
+
+          </div>
+          </> 
+          } */}
         </div>
         <NavBar />
       </header>

@@ -13,7 +13,7 @@ const UserContext = createContext(undefined);
 // Creamos un provider para envolver nuestra app
 export const UserProvider = ({children}) => {
   const [currentUser, setCurrentUser] = useState(null);
-
+  // const [userData, setUserData] = useState(null)
   // Check for existing token on app load
   useEffect(() => {
     const checkExistingToken = () => {
