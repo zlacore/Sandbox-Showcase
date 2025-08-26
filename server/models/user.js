@@ -4,10 +4,10 @@ export default class User extends Model {
 
   async setPassword(password) {
     this.password = await bcrypt.hash(password, 10);
-    
+
   }
-  
-  async checkPassword(testPassword){
+
+  async checkPassword(testPassword) {
     return bcrypt.compare(testPassword, this.password);
   }
 }
@@ -58,9 +58,9 @@ export function UserFactory(sequelize) {
       sequelize,
       hooks: {
         beforeCreate: async (user) => {
-           console.log('beforeCreate hook running');
-          if  (user.password && !user.password.startsWith('$2b$') ) {
-           user.password = await bcrypt.hash(user.password, 10)
+          console.log('beforeCreate hook running');
+          if (user.password && !user.password.startsWith('$2b$')) {
+            user.password = await bcrypt.hash(user.password, 10)
             console.log('password hashed!', user.password)
           }
         },
@@ -72,7 +72,7 @@ export function UserFactory(sequelize) {
       },
     }
   );
-  
+
   return User;
 }
 
