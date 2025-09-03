@@ -72,7 +72,7 @@ sequelize.authenticate()
     return sequelize.sync(
       // Quick reset to sync database
       // { force: true}
-      { alter: true }
+      // { alter: true }
     );
   })
   .then(() => {

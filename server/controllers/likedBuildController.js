@@ -1,4 +1,4 @@
-import { LikedBuildFactory } from "../models/likedBuild";
+import { LikedBuildFactory } from "../models/likedBuild.js";
 import { BuildFactory } from "../models/build.js";
 import { sequelize } from "../models/index.js";
 
@@ -21,7 +21,7 @@ export const likeBuild = async (req, res) => {
             build.likes += 1;
             await build.save()
         }
-        res.status(200).json(build, likedBuild)
+        res.status(200).json({build, likedBuild} )
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Failed to save liked build!' });
@@ -29,9 +29,9 @@ export const likeBuild = async (req, res) => {
 }
 
 export const unlikeBuild = async (req, res) => {
-    const { buildId } = req.params
+    const { user, buildId } = req.body
     try {
-        const unlikedBuild = await LikedBuild.destroy({ where: { buildId } })
+        const unlikedBuild = await LikedBuild.destroy({ where: { user, buildId } })
         const build = await Build.findByPk(buildId)
         if (build) {
 

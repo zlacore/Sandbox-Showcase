@@ -2,6 +2,7 @@ import { getBuilds } from '../api/buildApi'
 import { useState, useEffect } from 'react'
 import { useUser } from '../context/UserContext'
 import { deleteBuild } from '../api/buildApi'
+import { BuildCard } from '../components/buildCard'
 const Feed = () => {
     const [buildFeed, setBuildFeed] = useState([])
     const [loading, setLoading] = useState(true)
@@ -66,17 +67,15 @@ const Feed = () => {
         if (buildFeed.length === 0) return <p>No builds found</p>
         return buildFeed.map((build) => {
             return (
-                <div key={build.id} className='build-card'>
-                    <h3>{build.title}</h3>
-                    <img src={build.url} alt={build.title} style={{ maxWidth: '300px' }}></img>
-                    <p>{build.description}</p>
-                    <p>By: {build.user}</p>
+                <div className='build-container'>
+                    
+                    <BuildCard build={build} />
                     {currentUser?.username === 'zwilliam01' && (
                         <button onClick={() => handleDeleteBuild(build.publicId)}>
                             Delete
                         </button>
                     )
-                    }
+                }
                 </div>
             )
         })

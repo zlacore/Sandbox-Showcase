@@ -7,7 +7,7 @@ export function LikedBuildFactory(sequelize) {
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       user: { type: DataTypes.STRING, allowNull: false }, // or userId
-      buildId: { type: DataTypes.STRING, allowNull: false }, // or INTEGER
+      buildId: { type: DataTypes.INTEGER, allowNull: false }, // or INTEGER
       createdAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     },
     {

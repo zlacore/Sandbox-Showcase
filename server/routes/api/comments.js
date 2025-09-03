@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { commentOnBuild, getCommentsForBuild, deleteComment } from '../../controllers/commentController'
+import { commentOnBuild, getCommentsForBuild, deleteComment } from '../../controllers/commentController.js'
 
 const router = express.Router()
 

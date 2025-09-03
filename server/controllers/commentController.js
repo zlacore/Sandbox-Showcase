@@ -1,4 +1,4 @@
-import { CommentFactory } from "../models/comment";
+import { CommentFactory } from "../models/comment.js";
 import { BuildFactory } from "../models/build.js";
 import { sequelize } from "../models/index.js";
 const Comment = CommentFactory(sequelize)
@@ -7,13 +7,15 @@ const Build = BuildFactory(sequelize)
 // TODO: Create functions to get and upload comments to builds
 
 export const commentOnBuild = async (req, res) => {
+
+  console.log(req.body)
   const {
     buildId,
-    comment,
+    text,
     user
   } = req.body
   try {
-    const newComment = await Comment.create({ buildId, user, comment })
+    const newComment = await Comment.create({ buildId, user, text })
     const build = await Build.findByPk(buildId)
     if (build) {
       build.commentCount += 1;
@@ -29,7 +31,7 @@ export const commentOnBuild = async (req, res) => {
 export const deleteComment = async (req, res) => {
   const { commentId, buildId } = req.body
   try {
-    const deletedComment = await Comment.destroy({ where: { id: { commentId } } })
+    const deletedComment = await Comment.destroy({ where: { id: commentId } })
     const build = await Build.findByPk(buildId)
     if (build) {
       if (build.commentCount > 0) build.commentCount -= 1;

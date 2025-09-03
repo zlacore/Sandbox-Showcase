@@ -1,6 +1,6 @@
 
 
-const saveBuild = async (buildInfo) => {
+export const saveBuild = async (buildInfo) => {
     try {
         const token = localStorage.getItem('id_token')
         const response = await fetch('/api/build', {
@@ -24,7 +24,7 @@ const saveBuild = async (buildInfo) => {
     }
 };
 
-const deleteBuild = async (publicId) => {
+export const deleteBuild = async (publicId) => {
     try {
         const response = await fetch(`/api/build/${publicId}`, {
             method: 'DELETE'
@@ -41,7 +41,7 @@ const deleteBuild = async (publicId) => {
     }
 }
 
-const getBuilds = async () => {
+export const getBuilds = async () => {
     try {
         const token = localStorage.getItem('id_token')
         console.log('Token being sent:', token ? 'Token exists' : 'NO TOKEN FOUND');
@@ -65,7 +65,7 @@ const getBuilds = async () => {
     }
 }
 
-const getBuildsByUser = async (username) => {
+export const getBuildsByUser = async (username) => {
     try {
         const token = localStorage.getItem('id_token')
         console.log('Token being sent for getBuildsByUser:', token ? 'Token exists' : 'NO TOKEN FOUND');
@@ -91,4 +91,63 @@ const getBuildsByUser = async (username) => {
         return Promise.reject('Could not fetch builds!');
     }
 }
-export { saveBuild, getBuilds, getBuildsByUser, deleteBuild }
+
+// TODO: Write front-end calls to like and comment on builds
+
+export const likeBuild = async (user, buildId) => {
+
+    const buildInfo = {
+        user,
+        buildId,
+    }
+
+    console.log(buildInfo)
+    try {
+        const response = await fetch('/api/likedbuild', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(buildInfo)
+        })
+
+        const data = await response.json()
+        if (!response.ok) {
+            throw new Error('Failed to like build!')
+        }
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const unlikeBuild = async (buildInfo) => {
+    try {
+        const response = await fetch('/api/likedbuild', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(buildInfo)
+        })
+        const data = await response.json()
+         if (!response.ok) {
+            throw new Error('Failed to unlike build!')
+        }
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const getLikedBuilds = async (username) => {
+    try {
+        const response = await fetch(`/api/likedbuild/${username}`, {
+            method: 'GET'
+        })
+        const data = await response.json()
+         if (!response.ok) {
+            throw new Error('Failed to like build!')
+        }
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+
+}

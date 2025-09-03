@@ -53,3 +53,19 @@ nav {
 .build-card {
   border: 5px solid black;
 }
+
+.build-container {
+  border: 5px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+  min-height: 400px;
+  object-fit: cover;
+}
+
+.build-img {
+  max-width: 400px;
+  max-height: 400px;
+}
