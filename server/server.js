@@ -71,7 +71,7 @@ sequelize.authenticate()
     // One-time reset to fix database structure completely
     return sequelize.sync(
       // Quick reset to sync database
-      { force: true}
+      // { force: true}
       // { alter: true }
     );
   })
