@@ -28,7 +28,7 @@ const app = express();
 
 // Enable CORS for all routes
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
+  origin: process.env.NODE_ENV === 'production'
     ? process.env.FRONTEND_URL || true  // Allow all origins in production or specific URL
     : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'], // Allow requests from Vite dev server
   credentials: true
@@ -38,7 +38,7 @@ app.use(cors({
 app.use(express.static(path.join(__dirname, '../dist'))); // Serve built files from dist directory
 
 // Middleware for JSON and URL-encoded requests
-app.use(express.json({ limit: '50mb'}));
+app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Debug middleware to log all requests
@@ -72,7 +72,8 @@ sequelize.authenticate()
     return sequelize.sync(
       // Quick reset to sync database
       // { force: true}
-    ); 
+      // { alter: true }
+    );
   })
   .then(() => {
     const server = app.listen(PORT, () => {

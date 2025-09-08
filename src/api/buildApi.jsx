@@ -1,6 +1,6 @@
 
 
-const saveBuild = async (buildInfo) => {
+export const saveBuild = async (buildInfo) => {
     try {
         const token = localStorage.getItem('id_token')
         const response = await fetch('/api/build', {
@@ -24,13 +24,13 @@ const saveBuild = async (buildInfo) => {
     }
 };
 
-const deleteBuild = async (publicId) => {
+export const deleteBuild = async (publicId) => {
     try {
         const response = await fetch(`/api/build/${publicId}`, {
             method: 'DELETE'
         })
 
-         const data = await response.json()
+        const data = await response.json()
         if (!response.ok) {
             throw new Error('User information not retrieved, check network tab!');
         }
@@ -40,17 +40,31 @@ const deleteBuild = async (publicId) => {
         console.log(`Could not delete build!`, err)
     }
 }
-
-const getBuilds = async () => {
+export const getOneBuild = async (buildId) => {
+    try {
+        const response = await fetch(`/api/build/${buildId}`, {
+            method: 'GET'
+        })
+        const data = await response.json()
+        if (!response.ok) {
+            throw new Error('Build not retrieved, check network tab!');
+        }
+        return data
+    } catch (err) {
+        console.log('Error from build query: ', error);
+        return Promise.reject('Could not fetch builds!');
+    }
+}
+export const getBuilds = async () => {
     try {
         const token = localStorage.getItem('id_token')
         console.log('Token being sent:', token ? 'Token exists' : 'NO TOKEN FOUND');
 
         const response = await fetch('/api/build', {
             method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            // headers: {
+            //     'Authorization': `Bearer ${token}`
+            // }
         })
 
         const data = await response.json()
@@ -65,15 +79,15 @@ const getBuilds = async () => {
     }
 }
 
-const getBuildsByUser = async (username) => {
+export const getBuildsByUser = async (username) => {
     try {
         const token = localStorage.getItem('id_token')
         console.log('Token being sent for getBuildsByUser:', token ? 'Token exists' : 'NO TOKEN FOUND');
-        
+
         if (!token) {
             throw new Error('No authentication token found');
         }
-        
+
         const response = await fetch(`/api/build/${username}`, {
             method: 'GET',
             headers: {
@@ -91,4 +105,63 @@ const getBuildsByUser = async (username) => {
         return Promise.reject('Could not fetch builds!');
     }
 }
-export { saveBuild, getBuilds, getBuildsByUser, deleteBuild }
+
+// TODO: Write front-end calls to like and comment on builds
+
+export const likeBuild = async (buildInfo) => {
+
+    // const buildInfo = {
+    //     user,
+    //     buildId,
+    // }
+
+    console.log('buildInfo @ likeBuild:', buildInfo)
+    try {
+        const response = await fetch('/api/likedbuild', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(buildInfo)
+        })
+
+        const data = await response.json()
+        if (!response.ok) {
+            throw new Error('Failed to like build!')
+        }
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const unlikeBuild = async (buildInfo) => {
+    try {
+        const response = await fetch('/api/likedbuild', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(buildInfo)
+        })
+        const data = await response.json()
+        if (!response.ok) {
+            throw new Error('Failed to unlike build!')
+        }
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const getLikedBuilds = async (username) => {
+    try {
+        const response = await fetch(`/api/likedbuild/${username}`, {
+            method: 'GET'
+        })
+        const data = await response.json()
+        if (!response.ok) {
+            throw new Error('Failed to get liked builds!')
+        }
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+
+}

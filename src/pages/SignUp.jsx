@@ -65,6 +65,8 @@ export const SignUp = () => {
             if (token) {
                 localStorage.setItem('id_token', token);
             }
+
+            navigate('/login')
         } catch (error) {
             window.alert(error)
             console.error('There was a problem with your fetch operation:', error);

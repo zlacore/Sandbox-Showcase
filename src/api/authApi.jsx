@@ -1,6 +1,6 @@
 // import { UserLogin } from "../interfaces/UserLogin";
 
-const login = async (userInfo) => {
+export const login = async (userInfo) => {
   try {
     const response = await fetch('/api/auth/login', {
       method: 'POST',
@@ -22,5 +22,3 @@ const login = async (userInfo) => {
     return Promise.reject('Could not fetch user info');
   }
 };
-
-export { login };

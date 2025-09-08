@@ -33,10 +33,15 @@ export function BuildFactory(sequelize) {
             description: {
                 type: DataTypes.STRING,
                 allowNull: true
+            },
+            likes: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0
+            },
+            commentCount: {
+                type: DataTypes.INTEGER
             }
-
-
-
         },
         {
             tableName: 'build',

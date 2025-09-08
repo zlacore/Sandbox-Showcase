@@ -3,7 +3,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { authenticateToken } from '../../middleware/auth.js'
 
-import { uploadBuild, getAllBuilds, getBuildsByUser, deleteBuild } from '../../controllers/buildController.js'
+import { uploadBuild, getAllBuilds, getBuildsByUser, deleteBuild, getOneBuild } from '../../controllers/buildController.js'
 dotenv.config()
 
 
@@ -16,5 +16,7 @@ router.delete('/:publicId', deleteBuild)
 router.get('/', getAllBuilds)
 // Query builds by user (no auth needed)
 router.get('/:user', getBuildsByUser)
+
+router.get('/:buildId', getOneBuild)
 
 export { router as buildRouter }

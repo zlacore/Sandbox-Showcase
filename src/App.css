@@ -6,6 +6,7 @@ header {
   background-color: rgb(148, 223, 148);
 }
 
+
 #subheader {
   display: flex;
   flex-direction: row;
@@ -24,18 +25,21 @@ nav {
 
 #feed {
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  /* min-height: 400px; */
 }
+
 #feedsearch {
   display: flex;
   position: relative;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%; 
-} 
+  width: 100%;
+}
 
 #feed-div {
   display: flex;
@@ -43,13 +47,48 @@ nav {
   flex-direction: row;
   flex-wrap: wrap;
   width: 1200px;
-  
+
 }
 
 #upload-card {
   display: flex;
   flex-direction: column;
 }
+
 .build-card {
+  min-height: 750px;
+  max-height: 750px;
+  /* Adjust as needed */
+  min-width: 400px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 16px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+}
+/* 
+.build-container {
   border: 5px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+  min-height: 400px;
+  object-fit: cover;
+} */
+
+.build-img {
+  max-width: 400px;
+  max-height: 400px;
+}
+
+.comment-container {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 8px;
 }

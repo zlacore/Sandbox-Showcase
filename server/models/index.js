@@ -1,8 +1,12 @@
 import { Sequelize } from 'sequelize';
 import User from './user.js'
 import Build from './build.js'
+import LikedBuild from './likedBuild.js';
+import { Comment } from './comment.js';
 import { UserFactory } from './user.js';
 import { BuildFactory } from './build.js';
+import { CommentFactory } from './comment.js';
+import { LikedBuildFactory } from './likedBuild.js';
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -37,8 +41,14 @@ const sequelize = process.env.DATABASE_URL
 
 UserFactory(sequelize);
 BuildFactory(sequelize);
+CommentFactory(sequelize)
+LikedBuildFactory(sequelize)
 
 User.hasMany(Build, { foreignKey: 'user', sourceKey: 'username' });
 Build.belongsTo(User, { foreignKey: 'user', targetKey: 'username' });
+Build.hasMany(Comment, { foreignKey: 'buildId' });
+Comment.belongsTo(Build, { foreignKey: 'buildId' });
+User.hasMany(LikedBuild, { foreignKey: 'user', sourceKey: 'username'} );
+LikedBuild.belongsTo(User, { foreignKey: 'user', sourceKey: 'username'})
 
 export { sequelize, Sequelize, User, Build }
