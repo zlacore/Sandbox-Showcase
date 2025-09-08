@@ -9,6 +9,7 @@ const Feed = () => {
     const [error, setError] = useState(null)
     const { currentUser } = useUser()
     useEffect(() => {
+        ////////////////////
         const fetchBuilds = async () => {
             try {
                 setLoading(true)
