@@ -9,6 +9,8 @@ const Build = BuildFactory(sequelize)
 
 export const likeBuild = async (req, res) => {
     const { user, buildId } = req.body
+    console.log(user)
+    console.log(buildId)
     try {
         const alreadyLiked = await LikedBuild.findOne({ where: { user, buildId } });
         if (alreadyLiked) {
@@ -48,6 +50,7 @@ export const getLikedBuilds = async (req, res) => {
     const { username } = req.params
     try {
         const likedBuilds = await LikedBuild.findAll({ where: { user: username } })
+        console.log(likedBuilds)
         res.status(200).json(likedBuilds)
     } catch (err) {
         console.error(err);

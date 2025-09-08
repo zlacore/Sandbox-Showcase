@@ -35,7 +35,9 @@ export function BuildFactory(sequelize) {
                 allowNull: true
             },
             likes: {
-                type: DataTypes.INTEGER
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0
             },
             commentCount: {
                 type: DataTypes.INTEGER

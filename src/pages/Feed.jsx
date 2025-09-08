@@ -26,10 +26,10 @@ const Feed = () => {
     }, [])
 
     const refreshBuilds = async () => {
-        if (!currentUser || !currentUser.username) return;
+        // if (!currentUser || !currentUser.username) return;
         setLoading(true);
         try {
-            const builds = await getBuildsByUser(currentUser.username);
+            const builds = await getBuilds();
             setBuildFeed(builds);
         } catch (err) {
             setError('Failed to load builds');
@@ -68,14 +68,14 @@ const Feed = () => {
         return buildFeed.map((build) => {
             return (
                 <div className='build-container'>
-                    
+
                     <BuildCard build={build} />
                     {currentUser?.username === 'zwilliam01' && (
                         <button onClick={() => handleDeleteBuild(build.publicId)}>
                             Delete
                         </button>
                     )
-                }
+                    }
                 </div>
             )
         })
@@ -84,7 +84,7 @@ const Feed = () => {
 
 
         <>
-            <div id='feed'>
+            <div id='feed' >
                 <div className='centered'>
                     <div>
                         <h1>Build Feed</h1>
@@ -93,7 +93,7 @@ const Feed = () => {
                         {renderBuilds()}
                     </div>
                 </div >
-            </div>
+            </div >
         </>
     )
 }

@@ -63,3 +63,16 @@ export const getAllBuilds = async (_req, res) => {
         res.status(500).json({ message: 'Could not query builds!' });
     }
 }
+
+export const getOneBuild = async () => {
+    const { buildId } = req.params
+
+    try {
+        const build = await Build.findOne({ where: {buildId}})
+        res.status(200).json(build)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ message: 'Could not query build!' });
+    }
+
+}
