@@ -7,7 +7,7 @@ import { getLikedBuilds } from "../api/buildApi"
 import { useUser } from "../context/UserContext"
 import { getOneBuild } from "../api/buildApi"
 import { deleteComment } from "../api/commentApi"
-
+///////////////////////////////////////////
 /////////////////////////////////////////////
 export const BuildCard = ({ build }) => {
     const { currentUser } = useUser()
