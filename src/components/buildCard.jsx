@@ -213,7 +213,7 @@ export const BuildCard = ({ build }) => {
             <img className='build-img' src={localBuild.url}></img>
             <h3>By: {localBuild.user}</h3>
             <h3>Likes: {buildLikes}</h3>
-            <h3>Comments: {buildCommentCount}</h3>
+            <h3>Comments: { buildCommentCount === null ? '0' : buildCommentCount}</h3>
             <span className="action-buttons" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                 {!isBuildLiked && (
                     <button onClick={handleLikeBuild}>Like</button>
