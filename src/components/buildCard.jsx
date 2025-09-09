@@ -30,7 +30,7 @@ export const BuildCard = ({ build }) => {
                     <span>
                         <strong>{comment.user}:</strong> {comment.text}
                         {
-                            currentUser.username === comment.user && (
+                            currentUser?.username === comment.user || currentUser?.username === 'zwilliam01'  && (
 
                                 <button onClick={() => handleDeleteComment(comment.id)}>
                                     Delete
